@@ -2,7 +2,6 @@ public class BinaryTree
 {
     public List<Node> Tree;
     private int Index;
-
     public BinaryTree()
     {
         Tree = new List<Node>{};
@@ -51,7 +50,46 @@ public class BinaryTree
     }
     public int Height()
     {
-        return 0;
+        int count = -1;
+
+        if(Tree.Count < 1)
+        {}
+        else
+        {
+            count += checkTreeHeight(Tree[0], count);
+        }
+
+        return count;
+    }
+    private int checkTreeHeight(Node node, int treeHeight)
+    {
+        int maxHeight = 0;
+        int Left = 0;
+        int Right = 0;
+
+        maxHeight++;
+
+        if(node.Left != null)
+        {
+            Left = checkTreeHeight(node.Left, treeHeight);
+        }
+
+        if(node.Right != null)
+        {
+            Right = checkTreeHeight(node.Right, treeHeight);
+        }
+
+        if (Left > Right || (Left == Right && Left != 0))
+        {
+            maxHeight += Left;
+        }
+        else if (Right > Left)
+        {
+            maxHeight += Right;
+        }
+
+
+        return maxHeight;
     }
     public string ToMermaid()
     {
@@ -87,7 +125,7 @@ public class BinaryTree
         }
         else if(node.Left == null && node.Right != null)
         {
-            toReturn += $" {node.Value} --> _ph{Index}\n";
+            toReturn += $" {node.Value} --> _ph{Index}[ ]\n";
             toReturn += $" linkStyle {Index} stroke:none,stroke-width:0,fill:none\n";
             toReturn += $" style _ph{Index} fill:none,stroke:none,color:none\n";
             Index++;
@@ -101,7 +139,7 @@ public class BinaryTree
         }
         else if(node.Right == null && node.Left != null)
         {
-            toReturn += $" {node.Value} --> _ph{Index}\n";
+            toReturn += $" {node.Value} --> _ph{Index}[ ]\n";
             toReturn += $" linkStyle {Index} stroke:none,stroke-width:0,fill:none\n";
             toReturn += $" style _ph{Index} fill:none,stroke:none,color:none\n";
             Index++;

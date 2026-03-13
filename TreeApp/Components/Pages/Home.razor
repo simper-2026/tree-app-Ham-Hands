@@ -12,6 +12,8 @@
 <input @bind="newValue" @bind:event="oninput" @onkeydown="HandleKeyDown" placeholder="Enter a number" />
 <button @onclick="AddValue">Add to Tree</button>
 
+<br /> <p>@displayHeight</p>
+
 @if (postrender){
     <MermaidDiagram Definition=@treediagram  />
 }
@@ -23,8 +25,9 @@
     bool postrender = false;
     private BinaryTree tree = new BinaryTree();
     private string newValue = "";
-
+    private string displayHeight = $"The tree has a height of -1";
     private string treediagram = "";
+    private int treeHeight = 0;
 
     private void HandleKeyDown(KeyboardEventArgs e)
     {
@@ -42,6 +45,8 @@
             newValue = "";
         }
         treediagram = tree.ToMermaid();
+        treeHeight = tree.Height();
+        displayHeight = $"The tree has a height of {treeHeight}";
         if (!postrender)
         {
             postrender = true;
