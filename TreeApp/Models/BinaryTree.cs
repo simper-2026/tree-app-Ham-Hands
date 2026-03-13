@@ -1,6 +1,7 @@
 public class BinaryTree
 {
     public List<Node> Tree;
+    private int Index;
 
     public BinaryTree()
     {
@@ -8,6 +9,7 @@ public class BinaryTree
     }
     public void Insert(int value)
     {
+        // Adds the root if there isn't one yet
         if(!Tree.Any())
         {
             Tree.Add(new Node(value));
@@ -67,6 +69,7 @@ public class BinaryTree
         }
         else
         {
+            Index = 0;
             toReturn += MermaidNodeString(Tree[0]);
         }
 
@@ -78,7 +81,30 @@ public class BinaryTree
 
         if(node.Left != null)
         {
-            toReturn += $" {node.Value} --> {node.Left.Value}";
+            Index++;
+            toReturn += $" {node.Value} --> {node.Left.Value}\n";
+            toReturn += MermaidNodeString(node.Left);
+        }
+        else if(node.Left == null && node.Right != null)
+        {
+            toReturn += $" {node.Value} --> _ph{Index}\n";
+            toReturn += $" linkStyle {Index} stroke:none,stroke-width:0,fill:none\n";
+            toReturn += $" style _ph{Index} fill:none,stroke:none,color:none\n";
+            Index++;
+        }
+
+        if(node.Right != null)
+        {
+            Index++;
+            toReturn += $" {node.Value} --> {node.Right.Value}\n";
+            toReturn += MermaidNodeString(node.Right);
+        }
+        else if(node.Right == null && node.Left != null)
+        {
+            toReturn += $" {node.Value} --> _ph{Index}\n";
+            toReturn += $" linkStyle {Index} stroke:none,stroke-width:0,fill:none\n";
+            toReturn += $" style _ph{Index} fill:none,stroke:none,color:none\n";
+            Index++;
         }
 
         return toReturn;
