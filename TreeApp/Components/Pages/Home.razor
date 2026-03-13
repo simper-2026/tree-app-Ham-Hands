@@ -16,7 +16,7 @@
     <MermaidDiagram Definition=@treediagram  />
 }
 
-@* <br /> <textarea readonly rows="10" cols="50">@treediagram</textarea> *@
+<br /> <textarea readonly rows="10" cols="50">@treediagram</textarea>
 
 @code {
 
@@ -24,7 +24,7 @@
     private BinaryTree tree = new BinaryTree();
     private string newValue = "";
 
-    private string treediagram = @"test";
+    private string treediagram = "";
 
     private void HandleKeyDown(KeyboardEventArgs e)
     {
@@ -50,7 +50,7 @@
 
     protected override void OnInitialized()
     {
-        //postrender = true;
+        // postrender = true;
     }
 
 

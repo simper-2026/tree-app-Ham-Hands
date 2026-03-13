@@ -10,7 +10,7 @@ public class Node
         Left = null;
         Right = null;
     }
-    public Node(int i, Node l, Node r)
+    public Node(int i, Node? l, Node? r)
     {
         Value = i;
         Left = l;
