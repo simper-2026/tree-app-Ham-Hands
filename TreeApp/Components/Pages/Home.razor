@@ -13,6 +13,7 @@
 <button @onclick="AddValue">Add to Tree</button>
 
 <br /> <p>@displayHeight</p>
+<p>@order</p>
 
 @if (postrender){
     <MermaidDiagram Definition=@treediagram  />
@@ -28,6 +29,7 @@
     private string displayHeight = $"The tree has a height of -1";
     private string treediagram = "";
     private int treeHeight = 0;
+    private string order = "";
 
     private void HandleKeyDown(KeyboardEventArgs e)
     {
@@ -47,6 +49,7 @@
         treediagram = tree.ToMermaid();
         treeHeight = tree.Height();
         displayHeight = $"The tree has a height of {treeHeight}";
+        order = tree.InOrder(tree.Tree[0]);
         if (!postrender)
         {
             postrender = true;

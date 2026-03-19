@@ -44,9 +44,22 @@ public class BinaryTree
             }
         }
     }
-    public string InOrder()
+    public string InOrder(Node node)
     {
-        return "";
+        string inOrder = "";
+        if(node.Left != null)
+        {
+            inOrder += InOrder(node.Left); 
+        }
+
+        inOrder += $"{node.Value}, ";
+
+        if(node.Right != null)
+        {
+            inOrder += InOrder(node.Right);
+        }
+
+        return inOrder;
     }
     public int Height()
     {
