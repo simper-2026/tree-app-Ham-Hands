@@ -107,6 +107,7 @@ public class BinaryTree
     public string ToMermaid()
     {
         string toReturn = "graph TD\n";
+        int height = Height() - 1;
         
         if (Tree.Count < 1)
         {
@@ -115,26 +116,27 @@ public class BinaryTree
         }
         else if(Tree[0].Left == null && Tree[0].Right == null && Tree.Count == 1)
         {
-            toReturn += $" {Tree[0].Value}";
+            toReturn += $" {Tree[0].Value}[ {Tree[0].Value} h:0 ]";
             return toReturn;
         }
         else
         {
             Index = 0;
-            toReturn += MermaidNodeString(Tree[0]);
+            toReturn += $" {Tree[0].Value}[ {Tree[0].Value} h:{height + 1} ]\n";
+            toReturn += MermaidNodeString(Tree[0], height);
         }
 
         return toReturn;
     }
-    private string MermaidNodeString(Node node)
+    private string MermaidNodeString(Node node, int height)
     {
         string toReturn = "";
 
         if(node.Left != null)
         {
             Index++;
-            toReturn += $" {node.Value} --> {node.Left.Value}\n";
-            toReturn += MermaidNodeString(node.Left);
+            toReturn += $" {node.Value} --> {node.Left.Value}[ {node.Left.Value} h:{height} ]\n";
+            toReturn += MermaidNodeString(node.Left, height - 1);
         }
         else if(node.Left == null && node.Right != null)
         {
@@ -147,8 +149,8 @@ public class BinaryTree
         if(node.Right != null)
         {
             Index++;
-            toReturn += $" {node.Value} --> {node.Right.Value}\n";
-            toReturn += MermaidNodeString(node.Right);
+            toReturn += $" {node.Value} --> {node.Right.Value}[ {node.Right.Value} h:{height} ]\n";
+            toReturn += MermaidNodeString(node.Right, height - 1);
         }
         else if(node.Right == null && node.Left != null)
         {
