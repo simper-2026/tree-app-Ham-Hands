@@ -1,23 +1,21 @@
 public class BinaryTree
 {
-    public List<Node> Tree;
+    public Node? Root;
     private int Index;
     public BinaryTree()
-    {
-        Tree = new List<Node> { };
-    }
+    { }
     public void Insert(int value)
     {
         // Adds the root if there isn't one yet
-        if (!Tree.Any())
+        if (Root == null)
         {
-            Tree.Add(new Node(value));
+            Root = new Node(value);
             return;
         }
 
-        AddNode(new Node(value), Tree[0]);
+        AddNode(new Node(value), Root);
 
-        //balanceTree(Tree[0]);
+        Root = balanceTree(Root);
     }
     private void AddNode(Node child, Node parent)
     {
@@ -46,34 +44,41 @@ public class BinaryTree
             }
         }
     }
-    
-    // private Node balanceTree(Node node)
-    // {
-    //     int left = 0;
-    //     int right = 0;
+    private Node balanceTree(Node node)
+    {
+        int left = 0;
+        int right = 0;
+        
+        if(node.Left == null && node.Right == null)
+        {
+            return node;
+        }
+        
+        if (node.Left != null)
+        {    
+            left = checkTreeHeight(node.Left);
+        }
+        if (node.Right != null)
+        {            
+            right = checkTreeHeight(node.Right);
+        }
 
-    //     if (node.Left != null)
-    //     {
-    //         node.Left = balanceTree(node.Left);
-    //         left = checkNodeHeight(node.Left);
-    //     }
-    //     if (node.Right != null)
-    //     {
-    //         node.Right = balanceTree(node.Right);
-    //         right = checkNodeHeight(node.Right);
-    //     }
+        if(left - right > 1)
+        {
+            node = RotateRight(node);
+        }
+        else if(left - right < -1)
+        {
+            node = RotateLeft(node);
+        }
+        
+        if(node.Left != null)
+            node.Left = balanceTree(node.Left);
+        if(node.Right != null)
+            node.Right = balanceTree(node.Right);
 
-    //     if (left - right > 1)
-    //     {
-    //         node = RotateLeft(node);
-    //     }
-    //     else if (left - right < -1)
-    //     {
-    //         node = RotateRight(node);
-    //     }
-
-    //     return node;
-    // }
+        return node;
+    }
     public string InOrder(Node node)
     {
         string inOrder = "";
@@ -95,31 +100,29 @@ public class BinaryTree
     {
         int count = -1;
 
-        if (Tree.Count < 1)
+        if (Root == null)
         { }
         else
         {
-            count += checkTreeHeight(Tree[0], count);
+            count += checkTreeHeight(Root);
         }
 
         return count;
     }
-    private int checkTreeHeight(Node node, int treeHeight)
+    private int checkTreeHeight(Node node)
     {
-        int maxHeight = 0;
+        int maxHeight = 1;
         int Left = 0;
         int Right = 0;
 
-        maxHeight++;
-
-        if (node.Left != null)
+        if (node.Left != null && node.Left != node)
         {
-            Left = checkTreeHeight(node.Left, treeHeight);
+            Left = checkTreeHeight(node.Left);
         }
 
-        if (node.Right != null)
+        if (node.Right != null && node.Right != node)
         {
-            Right = checkTreeHeight(node.Right, treeHeight);
+            Right = checkTreeHeight(node.Right);
         }
 
         if (Left > Right || (Left == Right && Left != 0))
@@ -134,52 +137,26 @@ public class BinaryTree
 
         return maxHeight;
     }
-    private int checkNodeHeight(Node node)
-    {
-        int left = 0;
-        int right = 0;
-
-        if (node.Left != null)
-        {
-            left++;
-            left += checkNodeHeight(node.Left);
-        }
-
-        if (node.Right != null)
-        {
-            right++;
-            right += checkNodeHeight(node.Right);
-        }
-
-        if (right >= left)
-        {
-            return right;
-        }
-        else
-        {
-            return left;
-        }
-    }
     public string ToMermaid()
     {
         string toReturn = "graph TD\n";
         int height = Height() - 1;
 
-        if (Tree.Count < 1)
+        if (Root == null)
         {
             toReturn += " empty[\"(empty tree)\"]";
             return toReturn;
         }
-        else if (Tree[0].Left == null && Tree[0].Right == null && Tree.Count == 1)
+        else if (Root.Left == null && Root.Right == null)
         {
-            toReturn += $" {Tree[0].Value}[ {Tree[0].Value} h:0 ]";
+            toReturn += $" {Root.Value}[ {Root.Value} h:0 ]";
             return toReturn;
         }
         else
         {
             Index = 0;
-            toReturn += $" {Tree[0].Value}[ {Tree[0].Value} h:{height + 1} ]\n";
-            toReturn += MermaidNodeString(Tree[0], height);
+            toReturn += $" {Root.Value}[ {Root.Value} h:{height + 1} ]\n";
+            toReturn += MermaidNodeString(Root, height);
         }
 
         return toReturn;
@@ -228,6 +205,10 @@ public class BinaryTree
                 Node node1 = newNode.Right;
                 node.Left = node1;
             }
+            else
+            {
+                node.Left = null;
+            }
             newNode.Right = node;
             return newNode;
         }
@@ -243,6 +224,10 @@ public class BinaryTree
             {
                 Node node1 = newNode.Left;
                 node.Right = node1;
+            }
+            else
+            {
+                node.Right = null;
             }
             newNode.Left = node;
             return newNode;

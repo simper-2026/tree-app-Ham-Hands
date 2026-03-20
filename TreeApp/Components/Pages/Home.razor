@@ -49,7 +49,7 @@
         treediagram = tree.ToMermaid();
         treeHeight = tree.Height();
         displayHeight = $"The tree has a height of {treeHeight}";
-        order = tree.InOrder(tree.Tree[0]);
+        order = tree.InOrder(tree.Root);
         if (!postrender)
         {
             postrender = true;
