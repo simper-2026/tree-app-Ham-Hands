@@ -65,11 +65,11 @@ public class BinaryTree
 
     //     if (left - right > 1)
     //     {
-    //         node = RotateRight(node);
+    //         node = RotateLeft(node);
     //     }
     //     else if (left - right < -1)
     //     {
-    //         node = RotateLeft(node);
+    //         node = RotateRight(node);
     //     }
 
     //     return node;
