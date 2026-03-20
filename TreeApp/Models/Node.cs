@@ -16,4 +16,10 @@ public class Node
         Left = l;
         Right = r;
     }
+    public Node(Node n)
+    {
+        Value = n.Value;
+        Left = n.Left;
+        Right = n.Right;
+    }
 }
